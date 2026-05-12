@@ -176,7 +176,6 @@ html, body {
 /* Page-load stagger */
 #app .top-bar,
 #app .hero > *,
-#app .hero .controls > *,
 #app .status-bar {
   opacity: 0;
   transform: translateY(18px);
@@ -185,11 +184,8 @@ html, body {
 
 #app.reveal .top-bar                          { transition-delay:  50ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .hash-panel                 { transition-delay: 140ms; opacity: 1; transform: translateY(0); }
-#app.reveal .hero .controls .btn-generate,
-#app.reveal .hero .controls .hash-input-group { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
-#app.reveal .hero .controls .volume-group     { transition-delay: 260ms; opacity: 1; transform: translateY(0); }
-#app.reveal .hero .controls .arp-panel         { transition-delay: 320ms; opacity: 1; transform: translateY(0); }
-#app.reveal .status-bar                       { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls                   { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+#app.reveal .status-bar                       { transition-delay: 340ms; opacity: 1; transform: translateY(0); }
 
 /* ── Top Bar ───────────────────────────────────────────── */
 .top-bar {
@@ -286,9 +282,9 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--s-8);
-  padding: var(--s-8) 0;
+  padding: var(--s-8) 0 var(--s-12);
 }
 
 /* ── Hash Panel ────────────────────────────────────────── */
