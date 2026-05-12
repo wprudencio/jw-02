@@ -1,4 +1,4 @@
-# JW-02
+<img width="674" height="98" alt="image" src="https://github.com/user-attachments/assets/436b7a1e-40da-4e96-8429-a2095fa9d86a" />
 
 A browser-based polyphonic synthesizer with deterministic sound generation from text hashes. Built with vanilla JavaScript and the Web Audio API — no external audio libraries.
 
