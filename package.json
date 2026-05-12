@@ -1,0 +1,17 @@
+{
+  "name": "jw-02",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "wrangler pages deploy dist/ --project-name jw-02",
+    "cf-preview": "wrangler pages dev dist/ --project-name jw-02"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "wrangler": "^4.0.0"
+  }
+}
