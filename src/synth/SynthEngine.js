@@ -20,6 +20,7 @@
 import { DeterministicRandom } from './DeterministicRandom.js';
 import { Voice } from './Voice.js';
 import { Effects } from './Effects.js';
+import { Arpeggiator } from './Arpeggiator.js';
 
 // ═══════════════════════════════════════════════════════════════════════
 // kkox0-inspired Archetype Definitions
@@ -116,6 +117,9 @@ export class SynthEngine {
     this._masterGain = null;
     this._sustainOn = false;
     this._sustainedVoices = new Set();
+
+    // Arpeggiator
+    this._arp = new Arpeggiator(this);
   }
 
   /** Whether the audio context has been initialized */
@@ -126,6 +130,9 @@ export class SynthEngine {
 
   /** Get the current config (read-only) */
   get currentConfig() { return this._currentConfig; }
+
+  /** Get the arpeggiator instance */
+  get arp() { return this._arp; }
 
   /**
    * Initialize the audio context.
@@ -912,10 +919,40 @@ export class SynthEngine {
 
   /**
    * Start a note.
+   * Routes through arpeggiator if active.
    * @param {number} midiNote - MIDI note number (0-127)
    * @param {number} velocity - 0-1
    */
   noteOn(midiNote, velocity = 0.8) {
+    if (!this._initialized || !this._currentConfig) return;
+
+    // If arpeggiator is active, it manages note sequencing
+    if (this._arp.active) {
+      this._arp.noteOn(midiNote, velocity);
+      return;
+    }
+
+    this._noteOnDirect(midiNote, velocity);
+  }
+
+  /**
+   * Stop a note (release phase).
+   * Routes through arpeggiator if active.
+   */
+  noteOff(midiNote) {
+    // If arpeggiator is active, it manages note release
+    if (this._arp.active) {
+      this._arp.noteOff(midiNote);
+      return;
+    }
+
+    this._noteOffDirect(midiNote);
+  }
+
+  /**
+   * Direct noteOn — bypasses arpeggiator. Used by the arpeggiator itself.
+   */
+  _noteOnDirect(midiNote, velocity = 0.8) {
     if (!this._initialized || !this._currentConfig) return;
 
     // Clamp to playable range
@@ -974,7 +1011,10 @@ export class SynthEngine {
    * Stop a note (release phase).
    * Voice is kept alive for the release duration, then cleaned up.
    */
-  noteOff(midiNote) {
+  /**
+   * Direct noteOff — bypasses arpeggiator. Used by the arpeggiator itself.
+   */
+  _noteOffDirect(midiNote) {
     const note = Math.round(midiNote);
     if (!this._activeNotes.has(note)) return;
 
@@ -1011,6 +1051,9 @@ export class SynthEngine {
    * Stop all active notes immediately.
    */
   allNotesOff() {
+    // Stop arpeggiator too
+    this._arp.allNotesOff();
+
     for (const [note, idx] of this._activeNotes) {
       if (this._voices[idx]) {
         this._voices[idx].stop();
