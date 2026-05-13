@@ -842,62 +842,35 @@ html, body {
   left: calc(var(--s-8) + 92px);
   bottom: 56px;
   z-index: 101;
-  background: var(--bg-void);
-  border: 1px solid var(--green-dim);
-  color: var(--green-dim);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.3em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  padding: 5px 10px 5px 22px;
+  padding: 6px 10px;
   cursor: pointer;
-  transition: all 120ms ease;
+  transition: opacity 120ms ease, transform 120ms ease, background 120ms ease, color 120ms ease, border-color 120ms ease;
   user-select: none;
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.arp-vis-toggle::before {
-  content: '';
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  background: var(--green-dim);
-  transition: background 120ms ease, box-shadow 120ms ease;
 }
 
 .arp-vis-toggle:hover {
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.arp-vis-toggle:hover::before {
-  background: var(--green);
-  box-shadow: 0 0 6px var(--green);
-}
-
-.arp-vis-toggle.active {
-  background: var(--bg-void);
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.arp-vis-toggle.active::before {
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green), 0 0 2px var(--green);
-}
-
-.arp-vis-toggle.blink {
   border-color: var(--amber);
   color: var(--amber);
 }
 
-.arp-vis-toggle.blink::before {
+.arp-vis-toggle.active {
   background: var(--amber);
-  box-shadow: 0 0 8px var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
+}
+
+.arp-vis-toggle.blink {
+  background: var(--green);
+  color: var(--text-inverse);
+  border-color: var(--green);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
