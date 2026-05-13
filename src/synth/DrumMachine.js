@@ -15,7 +15,7 @@
  * through the effects chain so drums get reverb, distortion, etc.
  */
 
-const SOUNDS = ['KICK', 'SNARE', 'HI-HAT', 'CLAP', 'TOM'];
+const SOUNDS = ['kick', 'snare', 'hihat', 'clap', 'tom'];
 const STEPS = 16;
 
 const PATTERN_NAMES = [

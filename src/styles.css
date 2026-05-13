@@ -175,7 +175,7 @@ html, body {
 
 /* Page-load stagger */
 #app .top-bar,
-#app .hero > *,
+#app .hero > .hash-panel,
 #app .hero .controls > *,
 #app .status-bar {
   opacity: 0;
@@ -185,6 +185,7 @@ html, body {
 
 #app.reveal .top-bar                          { transition-delay:  50ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .hash-panel                 { transition-delay: 140ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls                     { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .controls .btn-generate,
 #app.reveal .hero .controls .hash-input-group { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .controls .volume-group     { transition-delay: 260ms; opacity: 1; transform: translateY(0); }
