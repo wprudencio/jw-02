@@ -842,9 +842,9 @@ html, body {
   left: calc(var(--s-8) + 92px);
   bottom: 56px;
   z-index: 101;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-mid);
-  color: var(--text-muted);
+  background: var(--amber);
+  border: 1px solid var(--amber);
+  color: #111111;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
@@ -852,25 +852,17 @@ html, body {
   text-transform: uppercase;
   padding: 6px 10px;
   cursor: pointer;
-  transition: opacity 120ms ease, transform 120ms ease, background 120ms ease, color 120ms ease, border-color 120ms ease;
+  transition: opacity 120ms ease, transform 120ms ease;
   user-select: none;
 }
 
 .arp-vis-toggle:hover {
-  border-color: var(--amber);
-  color: var(--amber);
+  opacity: 0.85;
 }
 
 .arp-vis-toggle.active {
-  background: var(--amber);
-  color: var(--text-inverse);
-  border-color: var(--amber);
-}
-
-.arp-vis-toggle.blink {
-  background: var(--green);
-  color: var(--text-inverse);
-  border-color: var(--green);
+  opacity: 0.7;
+  transform: scale(0.96);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
