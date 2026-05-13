@@ -811,8 +811,8 @@ html, body {
 .history-toggle {
   height: 32px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-mid);
-  color: var(--text-muted);
+  border: 1px solid var(--green-dim);
+  color: var(--green);
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
@@ -826,22 +826,22 @@ html, body {
 }
 
 .history-toggle:hover {
-  color: var(--amber);
-  border-color: var(--amber);
+  color: var(--green);
+  border-color: var(--green);
 }
 
 .history-toggle.active {
-  background: var(--amber);
+  background: var(--green);
   color: var(--text-inverse);
-  border-color: var(--amber);
+  border-color: var(--green);
 }
 
 /* ── ARP Panel Visibility Toggle ─────────────────────── */
 .arp-vis-toggle {
   height: 32px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-mid);
-  color: var(--text-muted);
+  border: 1px solid var(--green-dim);
+  color: var(--green);
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
@@ -855,37 +855,37 @@ html, body {
 }
 
 .arp-vis-toggle:hover {
-  color: var(--amber);
-  border-color: var(--amber);
+  color: var(--green);
+  border-color: var(--green);
 }
 
 .arp-vis-toggle.active {
-  background: var(--amber);
+  background: var(--green);
   color: var(--text-inverse);
-  border-color: var(--amber);
+  border-color: var(--green);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
 .history-section {
   position: fixed;
-  left: var(--s-8);
-  bottom: 92px;
+  right: var(--s-8);
+  top: 50%;
+  transform: translateX(12px) translateY(-50%);
   width: 210px;
-  max-height: 280px;
+  max-height: 60vh;
   background: var(--bg-surface);
   border: 1px solid var(--border-mid);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   z-index: 100;
-  transform: translateY(12px);
   opacity: 0;
   pointer-events: none;
   transition: transform 220ms ease, opacity 180ms ease;
 }
 
 .history-section.visible {
-  transform: translateY(0);
+  transform: translateX(0) translateY(-50%);
   opacity: 1;
   pointer-events: auto;
 }
