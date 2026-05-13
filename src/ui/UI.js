@@ -412,6 +412,11 @@ export class UI {
     historyToggle.className = 'history-toggle';
     historyToggle.textContent = 'HISTORY';
 
+    /* ── ARP Panel Toggle ── */
+    const arpVisToggle = document.createElement('button');
+    arpVisToggle.className = 'arp-vis-toggle';
+    arpVisToggle.textContent = 'ARP';
+
     /* ── History (fixed side panel — hidden by default) ── */
     const historySection = document.createElement('div');
     historySection.className = 'history-section';
@@ -437,6 +442,7 @@ export class UI {
 
     app.appendChild(historySection);
     app.appendChild(historyToggle);
+    app.appendChild(arpVisToggle);
 
     /* ── Status Bar ── */
     const statusBar = document.createElement('footer');
@@ -542,6 +548,7 @@ export class UI {
       historyList,
       historyCount,
       historyToggle,
+      arpVisToggle,
       themeToggle,
       volStatusValue: volStatus.querySelector('.vol-status-value'),
       arpToggle,
@@ -569,6 +576,18 @@ export class UI {
       const section = this._el.historySection;
       const isVisible = section.classList.toggle('visible');
       this._el.historyToggle.classList.toggle('active', isVisible);
+    });
+
+    // ARP panel visibility toggle
+    this._el.arpVisToggle.addEventListener('click', () => {
+      const panel = document.querySelector('.arp-panel');
+      if (!panel) return;
+      const isHidden = panel.classList.toggle('collapsed');
+      this._el.arpVisToggle.classList.toggle('active', !isHidden);
+      this._el.arpVisToggle.textContent = isHidden ? 'ARP' : 'ARP';
+      // Blink to indicate state change
+      this._el.arpVisToggle.classList.add('blink');
+      setTimeout(() => this._el.arpVisToggle.classList.remove('blink'), 300);
     });
 
     // Generate button
