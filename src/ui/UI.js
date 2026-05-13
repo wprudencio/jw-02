@@ -262,7 +262,7 @@ export class UI {
 
     // ─── Arpeggiator Panel ───
     const arpPanel = document.createElement('div');
-    arpPanel.className = 'arp-panel';
+    arpPanel.className = 'arp-panel collapsed';
 
     // ARP header row
     const arpHeader = document.createElement('div');
