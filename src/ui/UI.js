@@ -150,6 +150,15 @@ export class UI {
   _createDOM() {
     const app = document.getElementById('app');
 
+    /* ── Top Bar Buttons (created early for top bar assembly) ── */
+    const historyToggle = document.createElement('button');
+    historyToggle.className = 'history-toggle';
+    historyToggle.textContent = 'HIST';
+
+    const arpVisToggle = document.createElement('button');
+    arpVisToggle.className = 'arp-vis-toggle';
+    arpVisToggle.textContent = 'ARP';
+
     /* ── Top Bar ── */
     const topBar = document.createElement('header');
     topBar.className = 'top-bar';
@@ -409,15 +418,7 @@ export class UI {
     hero.appendChild(controls);
     app.appendChild(hero);
 
-    /* ── History Toggle Button ── */
-    const historyToggle = document.createElement('button');
-    historyToggle.className = 'history-toggle';
-    historyToggle.textContent = 'HIST';
 
-    /* ── ARP Panel Toggle ── */
-    const arpVisToggle = document.createElement('button');
-    arpVisToggle.className = 'arp-vis-toggle';
-    arpVisToggle.textContent = 'ARP';
 
     /* ── History (fixed side panel — hidden by default) ── */
     const historySection = document.createElement('div');
