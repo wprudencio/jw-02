@@ -90,7 +90,7 @@ export class KeyboardController {
   }
 
   _onKeyDown(e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
 
     const key = e.key.toLowerCase();
 
