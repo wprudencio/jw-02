@@ -171,6 +171,8 @@ export class UI {
 
     const topRight = document.createElement('div');
     topRight.className = 'top-bar-right';
+    topRight.appendChild(historyToggle);
+    topRight.appendChild(arpVisToggle);
     topRight.appendChild(themeToggle);
     topRight.appendChild(version);
     topBar.appendChild(topRight);
@@ -410,7 +412,7 @@ export class UI {
     /* ── History Toggle Button ── */
     const historyToggle = document.createElement('button');
     historyToggle.className = 'history-toggle';
-    historyToggle.textContent = 'HISTORY';
+    historyToggle.textContent = 'HIST';
 
     /* ── ARP Panel Toggle ── */
     const arpVisToggle = document.createElement('button');
@@ -441,8 +443,7 @@ export class UI {
     historySection.appendChild(historyList);
 
     app.appendChild(historySection);
-    app.appendChild(historyToggle);
-    app.appendChild(arpVisToggle);
+
 
     /* ── Status Bar ── */
     const statusBar = document.createElement('footer');
@@ -584,10 +585,6 @@ export class UI {
       if (!panel) return;
       const isHidden = panel.classList.toggle('collapsed');
       this._el.arpVisToggle.classList.toggle('active', !isHidden);
-      this._el.arpVisToggle.textContent = isHidden ? 'ARP' : 'ARP';
-      // Blink to indicate state change
-      this._el.arpVisToggle.classList.add('blink');
-      setTimeout(() => this._el.arpVisToggle.classList.remove('blink'), 300);
     });
 
     // Generate button

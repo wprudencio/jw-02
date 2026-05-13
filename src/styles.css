@@ -809,60 +809,60 @@ html, body {
 
 /* ── History Toggle Button ─────────────────────────────── */
 .history-toggle {
-  position: fixed;
-  left: var(--s-8);
-  bottom: 56px;
-  z-index: 101;
-  background: var(--amber);
-  border: 1px solid var(--amber);
-  color: #111111;
+  height: 32px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 6px 10px;
+  padding: 0 10px;
   cursor: pointer;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .history-toggle:hover {
-  opacity: 0.85;
+  color: var(--amber);
+  border-color: var(--amber);
 }
 
 .history-toggle.active {
-  opacity: 0.7;
-  transform: scale(0.96);
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
 }
 
 /* ── ARP Panel Visibility Toggle ─────────────────────── */
 .arp-vis-toggle {
-  position: fixed;
-  left: calc(var(--s-8) + 92px);
-  bottom: 56px;
-  z-index: 101;
-  background: var(--amber);
-  border: 1px solid var(--amber);
-  color: #111111;
+  height: 32px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 6px 10px;
+  padding: 0 10px;
   cursor: pointer;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .arp-vis-toggle:hover {
-  opacity: 0.85;
+  color: var(--amber);
+  border-color: var(--amber);
 }
 
 .arp-vis-toggle.active {
-  opacity: 0.7;
-  transform: scale(0.96);
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
