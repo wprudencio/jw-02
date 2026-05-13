@@ -184,8 +184,8 @@ html, body {
 
 #app.reveal .top-bar                          { transition-delay:  50ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .hash-panel                 { transition-delay: 140ms; opacity: 1; transform: translateY(0); }
-#app.reveal .hero .controls                   { transition-delay: 260ms; opacity: 1; transform: translateY(0); }
-#app.reveal .status-bar                       { transition-delay: 380ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls                   { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+#app.reveal .status-bar                       { transition-delay: 340ms; opacity: 1; transform: translateY(0); }
 
 /* ── Top Bar ───────────────────────────────────────────── */
 .top-bar {
@@ -282,9 +282,9 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--s-8);
-  padding: var(--s-8) 0;
+  padding: var(--s-8) 0 var(--s-12);
 }
 
 /* ── Hash Panel ────────────────────────────────────────── */
@@ -547,6 +547,205 @@ html, body {
   width: 100%;
 }
 
+/* ── Arpeggiator Panel ─────────────────────────────────── */
+.arp-panel {
+  width: 100%;
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+  overflow: hidden;
+  transition: border-color 150ms ease, max-height 350ms ease, opacity 300ms ease, margin 300ms ease;
+  max-height: 400px;
+  opacity: 1;
+}
+
+.arp-panel:hover {
+  border-color: var(--border-strong);
+}
+
+.arp-panel.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-width: 0;
+}
+
+.arp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s-2) var(--s-4);
+  border-bottom: 1px solid var(--border-thin);
+  background: var(--bg-base);
+}
+
+.arp-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.arp-toggle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.arp-toggle:hover {
+  border-color: var(--amber);
+  color: var(--text-secondary);
+}
+
+.arp-toggle.active {
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
+}
+
+.arp-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4) var(--s-4);
+}
+
+.arp-control-group {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-thin);
+}
+
+.arp-control-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 36px;
+  flex-shrink: 0;
+}
+
+.arp-select {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  background: var(--bg-base);
+  border: 1px solid var(--border-mid);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  min-width: 0;
+  transition: border-color 100ms ease;
+}
+
+.arp-select:focus {
+  outline: none;
+  border-color: var(--amber);
+}
+
+.arp-select:hover {
+  border-color: var(--border-strong);
+}
+
+.arp-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  background: var(--border-mid);
+  outline: none;
+  cursor: pointer;
+}
+
+.arp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 16px;
+  background: var(--amber);
+  border: none;
+  cursor: pointer;
+}
+
+.arp-slider::-webkit-slider-thumb:hover {
+  background: var(--amber-dim);
+}
+
+.arp-slider::-moz-range-thumb {
+  width: 12px;
+  height: 16px;
+  background: var(--amber);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.arp-slider::-moz-range-track {
+  height: 3px;
+  background: var(--border-mid);
+  border: none;
+}
+
+.arp-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.arp-oct-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.arp-oct-btn {
+  width: 24px;
+  height: 22px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 100ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.arp-oct-btn:hover {
+  border-color: var(--amber);
+  color: var(--text-secondary);
+}
+
+.arp-oct-btn.active {
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
+}
+
 .volume-label {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -635,6 +834,43 @@ html, body {
 .history-toggle.active {
   opacity: 0.7;
   transform: scale(0.96);
+}
+
+/* ── ARP Panel Visibility Toggle ─────────────────────── */
+.arp-vis-toggle {
+  position: fixed;
+  left: calc(var(--s-8) + 92px);
+  bottom: 56px;
+  z-index: 101;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: opacity 120ms ease, transform 120ms ease, background 120ms ease, color 120ms ease, border-color 120ms ease;
+  user-select: none;
+}
+
+.arp-vis-toggle:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.arp-vis-toggle.active {
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
+}
+
+.arp-vis-toggle.blink {
+  background: var(--green);
+  color: var(--text-inverse);
+  border-color: var(--green);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
@@ -836,6 +1072,24 @@ html, body {
   opacity: 0.35;
 }
 
+.arp-led {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  transition: background 200ms ease;
+  flex-shrink: 0;
+}
+
+.arp-led.on {
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+
+.arp-led.off {
+  background: var(--text-muted);
+  opacity: 0.35;
+}
+
 /* ── Activation Overlay (Boot Sequence) ────────────────── */
 .activation-overlay {
   position: fixed;
@@ -993,7 +1247,8 @@ html, body {
   }
 
   .history-section,
-  .history-toggle {
+  .history-toggle,
+  .arp-vis-toggle {
     display: none;
   }
 
@@ -1023,6 +1278,12 @@ html, body {
   }
 }
 
+@media (max-width: 768px) {
+  .arp-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 480px) {
   .hash-input-group {
     flex-direction: column;
@@ -1035,6 +1296,14 @@ html, body {
   }
 
   .volume-group {
+    flex-wrap: wrap;
+  }
+
+  .arp-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .arp-control-group {
     flex-wrap: wrap;
   }
 }

@@ -15,6 +15,7 @@
  */
 import { KeyboardController } from './KeyboardController.js';
 import { MIDIController } from './MIDIController.js';
+import { Arpeggiator } from '../synth/Arpeggiator.js';
 
 const WAVEFORM_BAR_COUNT = 48;
 
@@ -259,6 +260,150 @@ export class UI {
     volGroup.appendChild(volValue);
     controls.appendChild(volGroup);
 
+    // ─── Arpeggiator Panel ───
+    const arpPanel = document.createElement('div');
+    arpPanel.className = 'arp-panel';
+
+    // ARP header row
+    const arpHeader = document.createElement('div');
+    arpHeader.className = 'arp-header';
+
+    const arpTitle = document.createElement('span');
+    arpTitle.className = 'arp-title';
+    arpTitle.textContent = 'ARPEGGIATOR';
+
+    const arpToggle = document.createElement('button');
+    arpToggle.className = 'arp-toggle';
+    arpToggle.textContent = 'OFF';
+    arpToggle.setAttribute('aria-label', 'Toggle arpeggiator');
+
+    arpHeader.appendChild(arpTitle);
+    arpHeader.appendChild(arpToggle);
+    arpPanel.appendChild(arpHeader);
+
+    // ARP controls row
+    const arpControls = document.createElement('div');
+    arpControls.className = 'arp-controls';
+
+    // Pattern select
+    const patternGroup = document.createElement('div');
+    patternGroup.className = 'arp-control-group';
+
+    const patternLabel = document.createElement('span');
+    patternLabel.className = 'arp-control-label';
+    patternLabel.textContent = 'PATTERN';
+
+    const patternSelect = document.createElement('select');
+    patternSelect.className = 'arp-select';
+    const patternNames = Arpeggiator.patternNames;
+    for (let i = 0; i < patternNames.length; i++) {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = patternNames[i];
+      patternSelect.appendChild(opt);
+    }
+
+    patternGroup.appendChild(patternLabel);
+    patternGroup.appendChild(patternSelect);
+    arpControls.appendChild(patternGroup);
+
+    // BPM control
+    const bpmGroup = document.createElement('div');
+    bpmGroup.className = 'arp-control-group';
+
+    const bpmLabel = document.createElement('span');
+    bpmLabel.className = 'arp-control-label';
+    bpmLabel.textContent = 'BPM';
+
+    const bpmValue = document.createElement('span');
+    bpmValue.className = 'arp-value';
+    bpmValue.textContent = '140';
+
+    const bpmSlider = document.createElement('input');
+    bpmSlider.type = 'range';
+    bpmSlider.className = 'arp-slider';
+    bpmSlider.min = 40;
+    bpmSlider.max = 300;
+    bpmSlider.value = 140;
+
+    bpmGroup.appendChild(bpmLabel);
+    bpmGroup.appendChild(bpmSlider);
+    bpmGroup.appendChild(bpmValue);
+    arpControls.appendChild(bpmGroup);
+
+    // Rate (divisor) control
+    const rateGroup = document.createElement('div');
+    rateGroup.className = 'arp-control-group';
+
+    const rateLabel = document.createElement('span');
+    rateLabel.className = 'arp-control-label';
+    rateLabel.textContent = 'RATE';
+
+    const rateSelect = document.createElement('select');
+    rateSelect.className = 'arp-select';
+    rateSelect.innerHTML = `
+      <option value="1/4">1/4</option>
+      <option value="1/8" selected>1/8</option>
+      <option value="1/8T">1/8T</option>
+      <option value="1/16">1/16</option>
+      <option value="1/16T">1/16T</option>
+      <option value="1/32">1/32</option>
+    `;
+
+    rateGroup.appendChild(rateLabel);
+    rateGroup.appendChild(rateSelect);
+    arpControls.appendChild(rateGroup);
+
+    // Gate control
+    const gateGroup = document.createElement('div');
+    gateGroup.className = 'arp-control-group';
+
+    const gateLabel = document.createElement('span');
+    gateLabel.className = 'arp-control-label';
+    gateLabel.textContent = 'GATE';
+
+    const gateValue = document.createElement('span');
+    gateValue.className = 'arp-value';
+    gateValue.textContent = '50%';
+
+    const gateSlider = document.createElement('input');
+    gateSlider.type = 'range';
+    gateSlider.className = 'arp-slider';
+    gateSlider.min = 5;
+    gateSlider.max = 100;
+    gateSlider.value = 50;
+
+    gateGroup.appendChild(gateLabel);
+    gateGroup.appendChild(gateSlider);
+    gateGroup.appendChild(gateValue);
+    arpControls.appendChild(gateGroup);
+
+    // Octave expand control
+    const octGroup = document.createElement('div');
+    octGroup.className = 'arp-control-group';
+
+    const octLabel = document.createElement('span');
+    octLabel.className = 'arp-control-label';
+    octLabel.textContent = 'OCT';
+
+    const octBtns = document.createElement('div');
+    octBtns.className = 'arp-oct-btns';
+
+    for (let n = 1; n <= 3; n++) {
+      const btn = document.createElement('button');
+      btn.className = 'arp-oct-btn' + (n === 1 ? ' active' : '');
+      btn.textContent = String(n);
+      btn.dataset.oct = String(n);
+      octBtns.appendChild(btn);
+    }
+
+    octGroup.appendChild(octLabel);
+    octGroup.appendChild(octBtns);
+    arpControls.appendChild(octGroup);
+
+    arpPanel.appendChild(arpControls);
+    controls.appendChild(arpPanel);
+
     hero.appendChild(controls);
     app.appendChild(hero);
 
@@ -266,6 +411,11 @@ export class UI {
     const historyToggle = document.createElement('button');
     historyToggle.className = 'history-toggle';
     historyToggle.textContent = 'HISTORY';
+
+    /* ── ARP Panel Toggle ── */
+    const arpVisToggle = document.createElement('button');
+    arpVisToggle.className = 'arp-vis-toggle';
+    arpVisToggle.textContent = 'ARP';
 
     /* ── History (fixed side panel — hidden by default) ── */
     const historySection = document.createElement('div');
@@ -292,6 +442,7 @@ export class UI {
 
     app.appendChild(historySection);
     app.appendChild(historyToggle);
+    app.appendChild(arpVisToggle);
 
     /* ── Status Bar ── */
     const statusBar = document.createElement('footer');
@@ -353,6 +504,22 @@ export class UI {
 
     infoRow.appendChild(midiInfo);
 
+    // ARP info
+    const arpInfo = document.createElement('span');
+    arpInfo.className = 'info-item arp-info';
+    const arpLabel = document.createElement('span');
+    arpLabel.className = 'label';
+    arpLabel.textContent = 'ARP:';
+    arpInfo.appendChild(arpLabel);
+    const arpLedEl = document.createElement('span');
+    arpLedEl.className = 'arp-led off';
+    arpInfo.appendChild(arpLedEl);
+    const arpStatusText = document.createElement('span');
+    arpStatusText.className = 'value arp-status-text';
+    arpStatusText.textContent = 'OFF';
+    arpInfo.appendChild(arpStatusText);
+    infoRow.appendChild(arpInfo);
+
     // Volume in status
     const volStatus = document.createElement('span');
     volStatus.className = 'info-item';
@@ -381,8 +548,19 @@ export class UI {
       historyList,
       historyCount,
       historyToggle,
+      arpVisToggle,
       themeToggle,
       volStatusValue: volStatus.querySelector('.vol-status-value'),
+      arpToggle,
+      patternSelect,
+      bpmSlider,
+      bpmValue,
+      rateSelect,
+      gateSlider,
+      gateValue,
+      octBtns,
+      arpLedEl,
+      arpStatusText,
     };
   }
 
@@ -398,6 +576,18 @@ export class UI {
       const section = this._el.historySection;
       const isVisible = section.classList.toggle('visible');
       this._el.historyToggle.classList.toggle('active', isVisible);
+    });
+
+    // ARP panel visibility toggle
+    this._el.arpVisToggle.addEventListener('click', () => {
+      const panel = document.querySelector('.arp-panel');
+      if (!panel) return;
+      const isHidden = panel.classList.toggle('collapsed');
+      this._el.arpVisToggle.classList.toggle('active', !isHidden);
+      this._el.arpVisToggle.textContent = isHidden ? 'ARP' : 'ARP';
+      // Blink to indicate state change
+      this._el.arpVisToggle.classList.add('blink');
+      setTimeout(() => this._el.arpVisToggle.classList.remove('blink'), 300);
     });
 
     // Generate button
@@ -447,6 +637,53 @@ export class UI {
         this._engine.setVolume(vol);
       } else {
         this._pendingVolume = vol;
+      }
+    });
+
+    // ── Arpeggiator events ──
+    this._el.arpToggle.addEventListener('click', () => {
+      const arp = this._engine.arp;
+      const isActive = !arp.active;
+      arp.setActive(isActive);
+      this._el.arpToggle.textContent = isActive ? 'ON' : 'OFF';
+      this._el.arpToggle.classList.toggle('active', isActive);
+      this._updateArpStatus();
+      this._updateStatusText(isActive ? `ARP ON — ${arp.patternName}` : 'ACTIVE');
+    });
+
+    this._el.patternSelect.addEventListener('change', (e) => {
+      const arp = this._engine.arp;
+      arp.setPattern(parseInt(e.target.value, 10));
+      this._updateArpStatus();
+      if (arp.active) {
+        this._updateStatusText(`ARP — ${arp.patternName}`);
+      }
+    });
+
+    this._el.bpmSlider.addEventListener('input', (e) => {
+      const bpm = parseInt(e.target.value, 10);
+      this._engine.arp.setBPM(bpm);
+      this._el.bpmValue.textContent = String(bpm);
+    });
+
+    this._el.rateSelect.addEventListener('change', (e) => {
+      this._engine.arp.setDivisorKey(e.target.value);
+    });
+
+    this._el.gateSlider.addEventListener('input', (e) => {
+      const pct = parseInt(e.target.value, 10);
+      this._engine.arp.setGate(pct / 100);
+      this._el.gateValue.textContent = pct + '%';
+    });
+
+    this._el.octBtns.addEventListener('click', (e) => {
+      const btn = e.target.closest('.arp-oct-btn');
+      if (!btn) return;
+      const oct = parseInt(btn.dataset.oct, 10);
+      this._engine.arp.setOctaveExpand(oct);
+      // Update active state
+      for (const b of this._el.octBtns.querySelectorAll('.arp-oct-btn')) {
+        b.classList.toggle('active', parseInt(b.dataset.oct, 10) === oct);
       }
     });
   }
@@ -596,6 +833,16 @@ export class UI {
   _updateStatusText(text) {
     if (this._el.statusText) {
       this._el.statusText.textContent = `STATUS: ${text}`;
+    }
+  }
+
+  _updateArpStatus() {
+    const arp = this._engine.arp;
+    if (this._el.arpLedEl) {
+      this._el.arpLedEl.className = `arp-led ${arp.active ? 'on' : 'off'}`;
+    }
+    if (this._el.arpStatusText) {
+      this._el.arpStatusText.textContent = arp.active ? arp.patternName : 'OFF';
     }
   }
 
