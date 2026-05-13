@@ -21,7 +21,6 @@ import { DeterministicRandom } from './DeterministicRandom.js';
 import { Voice } from './Voice.js';
 import { Effects } from './Effects.js';
 import { Arpeggiator } from './Arpeggiator.js';
-import { DrumMachine } from './DrumMachine.js';
 
 // ═══════════════════════════════════════════════════════════════════════
 // kkox0-inspired Archetype Definitions
@@ -121,9 +120,6 @@ export class SynthEngine {
 
     // Arpeggiator
     this._arp = new Arpeggiator(this);
-
-    // Drum Machine
-    this._drums = new DrumMachine(this);
   }
 
   /** Whether the audio context has been initialized */
@@ -137,9 +133,6 @@ export class SynthEngine {
 
   /** Get the arpeggiator instance */
   get arp() { return this._arp; }
-
-  /** Get the drum machine instance */
-  get drums() { return this._drums; };
 
   /**
    * Initialize the audio context.
@@ -253,9 +246,6 @@ export class SynthEngine {
 
     // Update effects
     this._effects.setConfig(this._currentConfig.effects || null);
-
-    // Mutate drum sounds from the same seed
-    this._drums.mutateFromSeed(seed);
   }
 
   // ═══════════════════════════════════════════════════════════════════════
@@ -1091,7 +1081,6 @@ export class SynthEngine {
    */
   dispose() {
     this.allNotesOff();
-    this._drums.dispose();
     if (this._effects) {
       this._effects.disconnect();
     }
