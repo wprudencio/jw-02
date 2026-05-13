@@ -338,8 +338,11 @@ export class UI {
     bpmSlider.value = 140;
 
     bpmGroup.appendChild(bpmLabel);
-    bpmGroup.appendChild(bpmSlider);
-    bpmGroup.appendChild(bpmValue);
+    const bpmRow = document.createElement('div');
+    bpmRow.className = 'arp-control-row';
+    bpmRow.appendChild(bpmSlider);
+    bpmRow.appendChild(bpmValue);
+    bpmGroup.appendChild(bpmRow);
     arpControls.appendChild(bpmGroup);
 
     // Rate (divisor) control
@@ -385,8 +388,11 @@ export class UI {
     gateSlider.value = 50;
 
     gateGroup.appendChild(gateLabel);
-    gateGroup.appendChild(gateSlider);
-    gateGroup.appendChild(gateValue);
+    const gateRow = document.createElement('div');
+    gateRow.className = 'arp-control-row';
+    gateRow.appendChild(gateSlider);
+    gateRow.appendChild(gateValue);
+    gateGroup.appendChild(gateRow);
     arpControls.appendChild(gateGroup);
 
     // Octave expand control

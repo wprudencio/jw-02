@@ -626,11 +626,17 @@ html, body {
 
 .arp-control-group {
   display: flex;
-  align-items: center;
-  gap: var(--s-2);
+  flex-direction: column;
+  gap: var(--s-1);
   padding: var(--s-2) var(--s-3);
   background: var(--bg-surface);
   border: 1px solid var(--border-thin);
+}
+
+.arp-control-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
 }
 
 .arp-control-label {
@@ -640,14 +646,13 @@ html, body {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-muted);
-  min-width: 36px;
   flex-shrink: 0;
 }
 
 .arp-select {
   -webkit-appearance: none;
   appearance: none;
-  flex: 1;
+  width: 100%;
   background: var(--bg-base);
   border: 1px solid var(--border-mid);
   color: var(--text-primary);
@@ -655,7 +660,6 @@ html, body {
   font-size: 11px;
   padding: 4px 8px;
   cursor: pointer;
-  min-width: 0;
   transition: border-color 100ms ease;
 }
 
