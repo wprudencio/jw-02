@@ -839,7 +839,7 @@ html, body {
 /* ── ARP Panel Visibility Toggle ─────────────────────── */
 .arp-vis-toggle {
   position: fixed;
-  left: calc(var(--s-8) + 82px);
+  left: calc(var(--s-8) + 92px);
   bottom: 56px;
   z-index: 101;
   background: var(--bg-surface);
