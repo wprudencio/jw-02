@@ -606,14 +606,14 @@ html, body {
 }
 
 .arp-toggle:hover {
-  border-color: var(--amber);
-  color: var(--text-secondary);
+  border-color: var(--green);
+  color: var(--green);
 }
 
 .arp-toggle.active {
-  background: var(--amber);
+  background: var(--green);
   color: var(--text-inverse);
-  border-color: var(--amber);
+  border-color: var(--green);
 }
 
 .arp-controls {
@@ -871,9 +871,9 @@ html, body {
 /* ── History Panel (fixed, side — hidden by default) ───── */
 .history-section {
   position: fixed;
-  right: var(--s-8);
+  left: var(--s-8);
   top: 50%;
-  transform: translateX(12px) translateY(-50%);
+  transform: translateX(-12px) translateY(-50%);
   width: 210px;
   max-height: 60vh;
   background: var(--bg-surface);
@@ -922,7 +922,7 @@ html, body {
 }
 
 .history-header-count {
-  color: var(--amber);
+  color: var(--green);
   opacity: 0.6;
 }
 
@@ -969,9 +969,9 @@ html, body {
 }
 
 .history-item.active {
-  color: var(--amber);
-  border-left-color: var(--amber);
-  background: var(--amber-wash);
+  color: var(--green);
+  border-left-color: var(--green);
+  background: var(--green-wash);
 }
 
 .history-item.active::before {
