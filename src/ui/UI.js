@@ -16,6 +16,7 @@
 import { KeyboardController } from './KeyboardController.js';
 import { MIDIController } from './MIDIController.js';
 import { Arpeggiator } from '../synth/Arpeggiator.js';
+import { DrumMachine } from '../synth/DrumMachine.js';
 
 const WAVEFORM_BAR_COUNT = 48;
 
@@ -404,6 +405,134 @@ export class UI {
     arpPanel.appendChild(arpControls);
     controls.appendChild(arpPanel);
 
+    // ─── Drum Machine ───
+    const drumPanel = document.createElement('div');
+    drumPanel.className = 'drum-panel';
+
+    // Header row
+    const drumHeader = document.createElement('div');
+    drumHeader.className = 'drum-header';
+
+    const drumTitle = document.createElement('span');
+    drumTitle.className = 'drum-title';
+    drumTitle.textContent = 'DRUMS';
+
+    const drumToggle = document.createElement('button');
+    drumToggle.className = 'drum-toggle';
+    drumToggle.textContent = 'OFF';
+    drumToggle.setAttribute('aria-label', 'Toggle drum machine');
+
+    drumHeader.appendChild(drumTitle);
+    drumHeader.appendChild(drumToggle);
+    drumPanel.appendChild(drumHeader);
+
+    // Controls row: pattern select + BPM + rate + swing
+    const drumCtrlRow = document.createElement('div');
+    drumCtrlRow.className = 'drum-ctrl-row';
+
+    // Pattern select
+    const patGroup = document.createElement('div');
+    patGroup.className = 'drum-ctrl-group';
+    const patLabel = document.createElement('span');
+    patLabel.className = 'drum-ctrl-label';
+    patLabel.textContent = 'PATTERN';
+    const patSelect = document.createElement('select');
+    patSelect.className = 'drum-select';
+    const drumPatternNames = DrumMachine.patternNames;
+    for (let i = 0; i < drumPatternNames.length; i++) {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = drumPatternNames[i];
+      patSelect.appendChild(opt);
+    }
+    patGroup.appendChild(patLabel);
+    patGroup.appendChild(patSelect);
+    drumCtrlRow.appendChild(patGroup);
+
+    // BPM (shared concept, independent control)
+    const drumBpmGroup = document.createElement('div');
+    drumBpmGroup.className = 'drum-ctrl-group';
+    const drumBpmLabel = document.createElement('span');
+    drumBpmLabel.className = 'drum-ctrl-label';
+    drumBpmLabel.textContent = 'BPM';
+    const drumBpmValue = document.createElement('span');
+    drumBpmValue.className = 'drum-value';
+    drumBpmValue.textContent = '140';
+    const drumBpmSlider = document.createElement('input');
+    drumBpmSlider.type = 'range';
+    drumBpmSlider.className = 'drum-slider';
+    drumBpmSlider.min = 40;
+    drumBpmSlider.max = 300;
+    drumBpmSlider.value = 140;
+    drumBpmGroup.appendChild(drumBpmLabel);
+    drumBpmGroup.appendChild(drumBpmSlider);
+    drumBpmGroup.appendChild(drumBpmValue);
+    drumCtrlRow.appendChild(drumBpmGroup);
+
+    // Rate select
+    const drumRateGroup = document.createElement('div');
+    drumRateGroup.className = 'drum-ctrl-group';
+    const drumRateLabel = document.createElement('span');
+    drumRateLabel.className = 'drum-ctrl-label';
+    drumRateLabel.textContent = 'RATE';
+    const drumRateSelect = document.createElement('select');
+    drumRateSelect.className = 'drum-select';
+    drumRateSelect.innerHTML = `
+      <option value="1/4">1/4</option>
+      <option value="1/8">1/8</option>
+      <option value="1/8T">1/8T</option>
+      <option value="1/16" selected>1/16</option>
+      <option value="1/16T">1/16T</option>
+      <option value="1/32">1/32</option>
+    `;
+    drumRateGroup.appendChild(drumRateLabel);
+    drumRateGroup.appendChild(drumRateSelect);
+    drumCtrlRow.appendChild(drumRateGroup);
+
+    drumPanel.appendChild(drumCtrlRow);
+
+    // Step sequencer grid
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'drum-grid';
+
+    const soundNames = DrumMachine.soundNames;
+    const STEPS = DrumMachine.steps;
+    const drumCells = {}; // { sound: [cellElements] }
+    const muteBtns = {};
+
+    for (const sound of soundNames) {
+      const row = document.createElement('div');
+      row.className = 'drum-row';
+      row.dataset.sound = sound;
+
+      // Mute button
+      const muteBtn = document.createElement('button');
+      muteBtn.className = 'drum-mute-btn';
+      muteBtn.textContent = sound.slice(0, 3).toUpperCase();
+      muteBtn.title = `Toggle ${sound}`;
+      muteBtn.dataset.sound = sound;
+      row.appendChild(muteBtn);
+      muteBtns[sound] = muteBtn;
+
+      drumCells[sound] = [];
+
+      for (let s = 0; s < STEPS; s++) {
+        const cell = document.createElement('div');
+        cell.className = 'drum-cell';
+        cell.dataset.sound = sound;
+        cell.dataset.step = String(s);
+        // Beat grouping visual: emphasize quarter notes (0,4,8,12)
+        if (s % 4 === 0) cell.classList.add('beat');
+        row.appendChild(cell);
+        drumCells[sound].push(cell);
+      }
+
+      gridContainer.appendChild(row);
+    }
+
+    drumPanel.appendChild(gridContainer);
+    controls.appendChild(drumPanel);
+
     hero.appendChild(controls);
     app.appendChild(hero);
 
@@ -520,6 +649,22 @@ export class UI {
     arpInfo.appendChild(arpStatusText);
     infoRow.appendChild(arpInfo);
 
+    // DRUM info
+    const drumInfo = document.createElement('span');
+    drumInfo.className = 'info-item drum-info-item';
+    const drumLabelEl = document.createElement('span');
+    drumLabelEl.className = 'label';
+    drumLabelEl.textContent = 'DRM:';
+    drumInfo.appendChild(drumLabelEl);
+    const drumLedEl = document.createElement('span');
+    drumLedEl.className = 'drum-led off';
+    drumInfo.appendChild(drumLedEl);
+    const drumStatusText = document.createElement('span');
+    drumStatusText.className = 'value drum-status-text';
+    drumStatusText.textContent = 'OFF';
+    drumInfo.appendChild(drumStatusText);
+    infoRow.appendChild(drumInfo);
+
     // Volume in status
     const volStatus = document.createElement('span');
     volStatus.className = 'info-item';
@@ -561,6 +706,15 @@ export class UI {
       octBtns,
       arpLedEl,
       arpStatusText,
+      drumToggle,
+      patSelect,
+      drumBpmSlider,
+      drumBpmValue,
+      drumRateSelect,
+      drumCells,
+      muteBtns,
+      drumLedEl,
+      drumStatusText,
     };
   }
 
@@ -686,6 +840,62 @@ export class UI {
         b.classList.toggle('active', parseInt(b.dataset.oct, 10) === oct);
       }
     });
+
+    // ── Drum Machine events ──
+    this._el.drumToggle.addEventListener('click', () => {
+      const drums = this._engine.drums;
+      const isActive = !drums.active;
+      drums.setActive(isActive);
+      this._el.drumToggle.textContent = isActive ? 'ON' : 'OFF';
+      this._el.drumToggle.classList.toggle('active', isActive);
+      this._updateDrumStatus();
+      if (isActive) {
+        this._startDrumVisualLoop();
+      } else {
+        this._stopDrumVisualLoop();
+        this._clearDrumHighlights();
+      }
+      this._updateStatusText(isActive ? `DRUMS ON — ${drums.patternName}` : 'ACTIVE');
+    });
+
+    this._el.patSelect.addEventListener('change', (e) => {
+      const drums = this._engine.drums;
+      drums.setPattern(parseInt(e.target.value, 10));
+      this._refreshDrumGrid();
+      this._updateDrumStatus();
+      if (drums.active) {
+        this._updateStatusText(`DRUMS — ${drums.patternName}`);
+      }
+    });
+
+    this._el.drumBpmSlider.addEventListener('input', (e) => {
+      const bpm = parseInt(e.target.value, 10);
+      this._engine.drums.setBPM(bpm);
+      this._el.drumBpmValue.textContent = String(bpm);
+    });
+
+    this._el.drumRateSelect.addEventListener('change', (e) => {
+      this._engine.drums.setDivisorKey(e.target.value);
+    });
+
+    // Drum grid cell clicks (toggle steps)
+    this._el.drumCells && Object.values(this._el.drumCells).flat().forEach(cell => {
+      cell.addEventListener('click', () => {
+        const sound = cell.dataset.sound;
+        const step = parseInt(cell.dataset.step, 10);
+        const newState = this._engine.drums.toggleStep(sound, step);
+        cell.classList.toggle('on', newState);
+      });
+    });
+
+    // Mute buttons
+    Object.values(this._el.muteBtns).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sound = btn.dataset.sound;
+        const isMuted = this._engine.drums.toggleMute(sound);
+        btn.classList.toggle('muted', isMuted);
+      });
+    });
   }
 
   /* ================================================================
@@ -705,6 +915,7 @@ export class UI {
     this._setHashDisplay(hash);
     this._el.hashInput.value = '';
     this._addToHistory(hash);
+    this._refreshDrumGrid(); // sounds mutated from hash
     this._updateStatusText(`ACTIVE — ${hash}`);
   }
 
@@ -725,6 +936,7 @@ export class UI {
     const upper = hash.toUpperCase();
     this._setHashDisplay(upper);
     this._addToHistory(upper);
+    this._refreshDrumGrid(); // sounds mutated from hash
     this._updateStatusText(`LOADED — ${upper}`);
   }
 
@@ -843,6 +1055,75 @@ export class UI {
     }
     if (this._el.arpStatusText) {
       this._el.arpStatusText.textContent = arp.active ? arp.patternName : 'OFF';
+    }
+  }
+
+  /* ================================================================
+   * Drum Machine UI
+   * ================================================================ */
+
+  _updateDrumStatus() {
+    const drums = this._engine.drums;
+    if (this._el.drumLedEl) {
+      this._el.drumLedEl.className = `drum-led ${drums.active ? 'on' : 'off'}`;
+    }
+    if (this._el.drumStatusText) {
+      this._el.drumStatusText.textContent = drums.active ? drums.patternName : 'OFF';
+    }
+  }
+
+  /** Repaint the grid from the drum machine's current state */
+  _refreshDrumGrid() {
+    const grid = this._engine.drums.grid;
+    for (const sound of DrumMachine.soundNames) {
+      const cells = this._el.drumCells[sound];
+      if (!cells) continue;
+      for (let s = 0; s < cells.length; s++) {
+        cells[s].classList.toggle('on', !!(grid[sound] && grid[sound][s]));
+      }
+    }
+  }
+
+  /** Start the visual step indicator loop */
+  _startDrumVisualLoop() {
+    this._stopDrumVisualLoop();
+    const update = () => {
+      this._drumVisualRaf = requestAnimationFrame(update);
+      this._highlightDrumStep();
+    };
+    this._drumVisualRaf = requestAnimationFrame(update);
+  }
+
+  _stopDrumVisualLoop() {
+    if (this._drumVisualRaf) {
+      cancelAnimationFrame(this._drumVisualRaf);
+      this._drumVisualRaf = null;
+    }
+  }
+
+  _highlightDrumStep() {
+    const drums = this._engine.drums;
+    if (!drums.active) return;
+    const step = drums.currentStep;
+    const prevStep = (step - 1 + DrumMachine.steps) % DrumMachine.steps;
+
+    for (const sound of DrumMachine.soundNames) {
+      const cells = this._el.drumCells[sound];
+      if (!cells) continue;
+      // Remove previous highlight
+      cells[prevStep]?.classList.remove('current');
+      // Add current highlight
+      cells[step]?.classList.add('current');
+    }
+  }
+
+  _clearDrumHighlights() {
+    for (const sound of DrumMachine.soundNames) {
+      const cells = this._el.drumCells[sound];
+      if (!cells) continue;
+      for (let s = 0; s < DrumMachine.steps; s++) {
+        cells[s].classList.remove('current');
+      }
     }
   }
 

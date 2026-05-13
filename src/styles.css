@@ -175,7 +175,8 @@ html, body {
 
 /* Page-load stagger */
 #app .top-bar,
-#app .hero > *,
+#app .hero > .hash-panel,
+#app .hero .controls > *,
 #app .status-bar {
   opacity: 0;
   transform: translateY(18px);
@@ -184,8 +185,13 @@ html, body {
 
 #app.reveal .top-bar                          { transition-delay:  50ms; opacity: 1; transform: translateY(0); }
 #app.reveal .hero .hash-panel                 { transition-delay: 140ms; opacity: 1; transform: translateY(0); }
-#app.reveal .hero .controls                   { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
-#app.reveal .status-bar                       { transition-delay: 340ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls                     { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls .btn-generate,
+#app.reveal .hero .controls .hash-input-group { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls .volume-group     { transition-delay: 260ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls .arp-panel         { transition-delay: 320ms; opacity: 1; transform: translateY(0); }
+#app.reveal .hero .controls .drum-panel         { transition-delay: 380ms; opacity: 1; transform: translateY(0); }
+#app.reveal .status-bar                       { transition-delay: 440ms; opacity: 1; transform: translateY(0); }
 
 /* ── Top Bar ───────────────────────────────────────────── */
 .top-bar {
@@ -746,6 +752,261 @@ html, body {
   border-color: var(--amber);
 }
 
+/* ── Drum Machine ──────────────────────────────────── */
+.drum-panel {
+  width: 100%;
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+  overflow: hidden;
+  transition: border-color 150ms ease;
+}
+
+.drum-panel:hover {
+  border-color: var(--border-strong);
+}
+
+.drum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s-2) var(--s-4);
+  border-bottom: 1px solid var(--border-thin);
+  background: var(--bg-base);
+}
+
+.drum-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.drum-toggle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.drum-toggle:hover {
+  border-color: var(--amber);
+  color: var(--text-secondary);
+}
+
+.drum-toggle.active {
+  background: var(--amber);
+  color: var(--text-inverse);
+  border-color: var(--amber);
+}
+
+.drum-ctrl-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--border-thin);
+}
+
+.drum-ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-thin);
+}
+
+.drum-ctrl-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 36px;
+  flex-shrink: 0;
+}
+
+.drum-select {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  background: var(--bg-base);
+  border: 1px solid var(--border-mid);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 6px;
+  cursor: pointer;
+  min-width: 0;
+  transition: border-color 100ms ease;
+}
+
+.drum-select:focus {
+  outline: none;
+  border-color: var(--amber);
+}
+
+.drum-select:hover {
+  border-color: var(--border-strong);
+}
+
+.drum-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  background: var(--border-mid);
+  outline: none;
+  cursor: pointer;
+}
+
+.drum-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 16px;
+  background: var(--amber);
+  border: none;
+  cursor: pointer;
+}
+
+.drum-slider::-webkit-slider-thumb:hover {
+  background: var(--amber-dim);
+}
+
+.drum-slider::-moz-range-thumb {
+  width: 12px;
+  height: 16px;
+  background: var(--amber);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.drum-slider::-moz-range-track {
+  height: 3px;
+  background: var(--border-mid);
+  border: none;
+}
+
+.drum-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 26px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Step Sequencer Grid ───────────────────────────── */
+.drum-grid {
+  padding: var(--s-2) var(--s-3) var(--s-3);
+  overflow-x: auto;
+}
+
+.drum-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.drum-mute-btn {
+  width: 36px;
+  height: 18px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 100ms ease;
+  padding: 0;
+  text-align: center;
+}
+
+.drum-mute-btn:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.drum-mute-btn.muted {
+  background: var(--text-muted);
+  color: var(--bg-void);
+  border-color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.drum-cell {
+  width: 22px;
+  height: 18px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-thin);
+  cursor: pointer;
+  transition: background 80ms ease, border-color 80ms ease;
+}
+
+.drum-cell:hover {
+  border-color: var(--amber);
+}
+
+.drum-cell.on {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+.drum-cell.on:hover {
+  background: var(--amber-dim);
+  border-color: var(--amber-dim);
+}
+
+.drum-cell.beat {
+  border-left: 1px solid var(--border-strong);
+}
+
+.drum-cell.current {
+  box-shadow: inset 0 0 0 2px var(--green);
+}
+
+.drum-cell.current.on {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+/* ── Drum LED Status ──────────────────────────────── */
+.drum-led {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  transition: background 200ms ease;
+  flex-shrink: 0;
+}
+
+.drum-led.on {
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+
+.drum-led.off {
+  background: var(--text-muted);
+  opacity: 0.35;
+}
+
 .volume-label {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1282,6 +1543,21 @@ html, body {
   .arp-controls {
     grid-template-columns: 1fr;
   }
+
+  .drum-ctrl-row {
+    grid-template-columns: 1fr;
+  }
+
+  .drum-cell {
+    width: 16px;
+    height: 16px;
+  }
+
+  .drum-mute-btn {
+    width: 28px;
+    height: 16px;
+    font-size: 7px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1305,5 +1581,19 @@ html, body {
 
   .arp-control-group {
     flex-wrap: wrap;
+  }
+
+  .drum-ctrl-row {
+    grid-template-columns: 1fr;
+  }
+
+  .drum-cell {
+    width: 14px;
+    height: 14px;
+  }
+
+  .drum-mute-btn {
+    width: 24px;
+    font-size: 6px;
   }
 }
