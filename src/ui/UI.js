@@ -273,7 +273,7 @@ export class UI {
 
     // ─── Arpeggiator Panel ───
     const arpPanel = document.createElement('div');
-    arpPanel.className = 'arp-panel collapsed';
+    arpPanel.className = 'arp-panel';
 
     // ARP header row
     const arpHeader = document.createElement('div');
@@ -413,10 +413,10 @@ export class UI {
     arpControls.appendChild(octGroup);
 
     arpPanel.appendChild(arpControls);
-    controls.appendChild(arpPanel);
 
     hero.appendChild(controls);
     app.appendChild(hero);
+    app.appendChild(arpPanel);
 
 
 
@@ -584,8 +584,8 @@ export class UI {
     this._el.arpVisToggle.addEventListener('click', () => {
       const panel = document.querySelector('.arp-panel');
       if (!panel) return;
-      const isHidden = panel.classList.toggle('collapsed');
-      this._el.arpVisToggle.classList.toggle('active', !isHidden);
+      const isVisible = panel.classList.toggle('visible');
+      this._el.arpVisToggle.classList.toggle('active', isVisible);
     });
 
     // Generate button

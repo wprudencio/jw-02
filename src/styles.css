@@ -549,25 +549,28 @@ html, body {
 
 /* ── Arpeggiator Panel ─────────────────────────────────── */
 .arp-panel {
-  width: 100%;
+  position: fixed;
+  right: var(--s-8);
+  bottom: 56px;
+  width: 210px;
+  background: var(--bg-surface);
   border: 1px solid var(--border-mid);
-  background: var(--bg-panel);
   overflow: hidden;
-  transition: border-color 150ms ease, max-height 350ms ease, opacity 300ms ease, margin 300ms ease;
-  max-height: 400px;
-  opacity: 1;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(12px);
+  transition: transform 220ms ease, opacity 180ms ease;
 }
 
 .arp-panel:hover {
   border-color: var(--border-strong);
 }
 
-.arp-panel.collapsed {
-  max-height: 0;
-  opacity: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  border-width: 0;
+.arp-panel.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 .arp-header {
@@ -614,10 +617,10 @@ html, body {
 }
 
 .arp-controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--s-2);
-  padding: var(--s-3) var(--s-4) var(--s-4);
+  padding: var(--s-3) var(--s-3) var(--s-4);
 }
 
 .arp-control-group {
@@ -1240,6 +1243,7 @@ html, body {
 
   .history-section,
   .history-toggle,
+  .arp-panel,
   .arp-vis-toggle {
     display: none;
   }
@@ -1270,11 +1274,6 @@ html, body {
   }
 }
 
-@media (max-width: 768px) {
-  .arp-controls {
-    grid-template-columns: 1fr;
-  }
-}
 
 @media (max-width: 480px) {
   .hash-input-group {
@@ -1291,11 +1290,5 @@ html, body {
     flex-wrap: wrap;
   }
 
-  .arp-controls {
-    grid-template-columns: 1fr;
-  }
 
-  .arp-control-group {
-    flex-wrap: wrap;
-  }
 }
