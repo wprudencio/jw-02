@@ -551,15 +551,16 @@ html, body {
 .arp-panel {
   position: fixed;
   right: var(--s-8);
-  bottom: 56px;
+  top: 50%;
+  transform: translateX(12px) translateY(-50%);
   width: 210px;
+  max-height: 60vh;
   background: var(--bg-surface);
   border: 1px solid var(--border-mid);
   overflow: hidden;
   z-index: 100;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(12px);
   transition: transform 220ms ease, opacity 180ms ease;
 }
 
@@ -570,7 +571,7 @@ html, body {
 .arp-panel.visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateX(0) translateY(-50%);
 }
 
 .arp-header {
