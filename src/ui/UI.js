@@ -603,9 +603,15 @@ export class UI {
     });
 
     // Load hash
-    this._el.loadBtn.addEventListener('click', () => this._loadHash());
+    this._el.loadBtn.addEventListener('click', () => {
+      this._loadHash();
+      this._el.hashInput.blur();
+    });
     this._el.hashInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') this._loadHash();
+      if (e.key === 'Enter') {
+        this._loadHash();
+        e.target.blur();
+      }
     });
 
     // Click hash to copy
@@ -639,6 +645,9 @@ export class UI {
         this._pendingVolume = vol;
       }
     });
+    this._el.volSlider.addEventListener('change', () => {
+      this._el.volSlider.blur();
+    });
 
     // ── Arpeggiator events ──
     this._el.arpToggle.addEventListener('click', () => {
@@ -658,6 +667,7 @@ export class UI {
       if (arp.active) {
         this._updateStatusText(`ARP — ${arp.patternName}`);
       }
+      e.target.blur();
     });
 
     this._el.bpmSlider.addEventListener('input', (e) => {
@@ -665,15 +675,22 @@ export class UI {
       this._engine.arp.setBPM(bpm);
       this._el.bpmValue.textContent = String(bpm);
     });
+    this._el.bpmSlider.addEventListener('change', (e) => {
+      e.target.blur();
+    });
 
     this._el.rateSelect.addEventListener('change', (e) => {
       this._engine.arp.setDivisorKey(e.target.value);
+      e.target.blur();
     });
 
     this._el.gateSlider.addEventListener('input', (e) => {
       const pct = parseInt(e.target.value, 10);
       this._engine.arp.setGate(pct / 100);
       this._el.gateValue.textContent = pct + '%';
+    });
+    this._el.gateSlider.addEventListener('change', (e) => {
+      e.target.blur();
     });
 
     this._el.octBtns.addEventListener('click', (e) => {
