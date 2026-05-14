@@ -402,10 +402,10 @@ export class UI {
     arpControls.appendChild(octGroup);
 
     arpPanel.appendChild(arpControls);
-    controls.appendChild(arpPanel);
 
     hero.appendChild(controls);
     app.appendChild(hero);
+    app.appendChild(arpPanel);
 
     /* ── History Toggle Button ── */
     const historyToggle = document.createElement('button');
@@ -578,16 +578,12 @@ export class UI {
       this._el.historyToggle.classList.toggle('active', isVisible);
     });
 
-    // ARP panel visibility toggle
+    // ARP panel visibility toggle — slide in/out from left
     this._el.arpVisToggle.addEventListener('click', () => {
       const panel = document.querySelector('.arp-panel');
       if (!panel) return;
       const isHidden = panel.classList.toggle('collapsed');
       this._el.arpVisToggle.classList.toggle('active', !isHidden);
-      this._el.arpVisToggle.textContent = isHidden ? 'ARP' : 'ARP';
-      // Blink to indicate state change
-      this._el.arpVisToggle.classList.add('blink');
-      setTimeout(() => this._el.arpVisToggle.classList.remove('blink'), 300);
     });
 
     // Generate button
