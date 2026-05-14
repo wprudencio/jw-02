@@ -547,14 +547,17 @@ html, body {
   width: 100%;
 }
 
-/* ── Arpeggiator Panel ─────────────────────────────────── */
+/* ── Arpeggiator Panel — Fixed vertical left strip ────── */
 .arp-panel {
-  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 240px;
   border: 1px solid var(--border-mid);
   background: var(--bg-panel);
-  overflow: hidden;
-  transition: border-color 150ms ease, max-height 350ms ease, opacity 300ms ease, margin 300ms ease;
-  max-height: 400px;
+  z-index: 90;
+  transition: transform 350ms ease, opacity 300ms ease, border-color 150ms ease;
   opacity: 1;
 }
 
@@ -563,11 +566,8 @@ html, body {
 }
 
 .arp-panel.collapsed {
-  max-height: 0;
+  transform: translateY(-50%) translateX(-100%);
   opacity: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  border-width: 0;
 }
 
 .arp-header {
@@ -614,8 +614,8 @@ html, body {
 }
 
 .arp-controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--s-2);
   padding: var(--s-3) var(--s-4) var(--s-4);
 }
@@ -668,6 +668,7 @@ html, body {
   -webkit-appearance: none;
   appearance: none;
   flex: 1;
+  min-width: 40px;
   height: 3px;
   background: var(--border-mid);
   outline: none;
@@ -842,9 +843,9 @@ html, body {
   left: calc(var(--s-8) + 92px);
   bottom: 56px;
   z-index: 101;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-mid);
-  color: var(--text-muted);
+  background: var(--amber);
+  border: 1px solid var(--amber);
+  color: #111111;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
@@ -852,25 +853,17 @@ html, body {
   text-transform: uppercase;
   padding: 6px 10px;
   cursor: pointer;
-  transition: opacity 120ms ease, transform 120ms ease, background 120ms ease, color 120ms ease, border-color 120ms ease;
+  transition: opacity 120ms ease, transform 120ms ease;
   user-select: none;
 }
 
 .arp-vis-toggle:hover {
-  border-color: var(--amber);
-  color: var(--amber);
+  opacity: 0.85;
 }
 
 .arp-vis-toggle.active {
-  background: var(--amber);
-  color: var(--text-inverse);
-  border-color: var(--amber);
-}
-
-.arp-vis-toggle.blink {
-  background: var(--green);
-  color: var(--text-inverse);
-  border-color: var(--green);
+  opacity: 0.7;
+  transform: scale(0.96);
 }
 
 /* ── History Panel (fixed, side — hidden by default) ───── */
@@ -1279,8 +1272,12 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .arp-controls {
-    grid-template-columns: 1fr;
+  .arp-panel {
+    width: 200px;
+  }
+
+  .arp-control-group {
+    flex-wrap: wrap;
   }
 }
 
@@ -1297,10 +1294,6 @@ html, body {
 
   .volume-group {
     flex-wrap: wrap;
-  }
-
-  .arp-controls {
-    grid-template-columns: 1fr;
   }
 
   .arp-control-group {
